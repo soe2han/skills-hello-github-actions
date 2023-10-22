@@ -1,0 +1,24 @@
+name: Post welcome comment
+
+on:
+  pull_request:
+    types: [opened]
+
+permissions:
+  pull-requests: write
+
+jobs:
+  welcome:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Post comment
+      uses: actions/github-script@v4
+      with:
+        script: |
+          const message = 'Thank you for submitting this pull request! We will review it as soon as possible.'
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: message
+          })
